@@ -1,6 +1,7 @@
 # Mandi-Data-Scraper
-scrape mandi data into csv
+scrape mandi data into a json api
 
 ## how to run
 - run `node index.js` 
-- `mandi-data.csv` will be generated
+- api server will run on `port 8080`
+- access data through `/api` route
