@@ -1,18 +1,33 @@
 const axios = require("axios"),
   cheerio = require("cheerio"),
-  fs = require("fs"),
-  json2csv = require("json2csv").Parser;
+  express = require("express"),
+  cors = require("cors"),
+  app = express();
 
-const mainURL = "https://www.commodityonline.com/mandiprices/";
-const urls = ["https://www.commodityonline.com/mandiprices/"];
-for (let i = 1; i <= 9; ++i) {
-  urls.push(`${mainURL}${36 * i}`);
-}
+app.use(express.json());
+app.use(cors());
 
-(async () => {
+//READ Request Handlers
+app.get("/", (req, res) => {
+  res.status(200).send({
+    response: "OK",
+    message: "Mandi Details API",
+    "api-routes": {
+      "all-details": "/api",
+    },
+  });
+});
+
+app.get("/api", async (req, res) => {
   mandiData = [];
+  const mainURL = "https://www.commodityonline.com/mandiprices/";
+  const urls = ["https://www.commodityonline.com/mandiprices/"];
+  for (let i = 1; i <= 9; ++i) {
+    urls.push(`${mainURL}${36 * i}`);
+  }
+
   for (let url of urls) {
-    console.log(url);
+    console.log("scraped data from: " + url);
     const response = await axios.get(url);
     let $ = cheerio.load(response.data);
 
@@ -29,8 +44,11 @@ for (let i = 1; i <= 9; ++i) {
       mandiData.push(newObject);
     });
   }
-  // console.log(mandiData);
-  const j2cp = new json2csv();
-  const csv = j2cp.parse(mandiData);
-  fs.writeFileSync("./mandi_data.csv", csv, "utf-8");
-})();
+  res.status(200).send(mandiData);
+});
+
+app.get("*", (req, res) => res.status(400).send("Wrong route use /api"));
+
+//PORT ENVIRONMENT VARIABLE
+const port = process.env.PORT || 8080;
+app.listen(port, () => console.log(`Running API Server on ${port}..`));
