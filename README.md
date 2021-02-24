@@ -1,5 +1,5 @@
 # Mandi-Data-Scraper
-scrape mandi data into a json api
+scrape mandi data into a json api    
 hosted here: https://mandi-details-api.herokuapp.com/api
 
 ## how to run
