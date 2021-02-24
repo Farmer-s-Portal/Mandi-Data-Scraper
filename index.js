@@ -20,7 +20,7 @@ for (let i = 1; i <= 9; ++i) {
       let price = $("div.dt_ta_14", elm);
       let newObject = {
         commodity: $("div.dt_ta_10", elm).text().trim(),
-        marketCenter: $("div.dt_ta_11", elm).text().trim().replace("\n", " "),
+        marketCenter: $("div.dt_ta_11", elm).text().trim().replace("\n", ","),
         variety: $("div.dt_ta_12", elm).text().trim(),
         arrrivals: $("div.dt_ta_13", elm).text().trim(),
         modalPrice: $(price[0]).text().trim(),
